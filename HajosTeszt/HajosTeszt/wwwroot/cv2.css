@@ -1,0 +1,82 @@
+﻿*{
+    box-sizing: border-box;
+}
+
+body {
+    font-weight: bold;
+    text-align: center;
+    margin: 10px;
+    padding: 20px;
+    Border: 1px solid fuchsia;
+    border-radius: 25px;
+}
+
+#article,
+#aside,
+#footer,
+#tarto,
+#nav {
+    padding: 20px;
+}
+
+#main {
+    background-color: fuchsia;
+}
+
+#tarto {
+    background-color: tomato;
+}
+
+#nav {
+    background: deepskyblue;
+}
+
+#article {
+    background: gold;
+}
+
+#aside {
+    text-align: left;
+    background-color: lightgreen;
+}
+
+#footer {
+    background: hotpink;
+}
+
+#nav {
+    display: flex;
+}
+
+    #nav a {
+        flex: 1 1 auto;
+        text-decoration: none;
+        color: black;
+    }
+
+@media screen and (min-width: 800px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        max-width: 1500px;
+        margin: auto;
+    }
+
+    #main {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    #nav,
+    #header {
+        order: -1;
+    }
+
+    #article {
+        flex: 1 1 75%;
+    }
+
+    #aside {
+        flex: 1 1 25%;
+    }
+}
