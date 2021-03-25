@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" >
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hajós teszt</title>
-    <link rel="stylesheet" href="hajo.css" >
+    <script src="/hetedik.js"></script>
 </head>
 <body>
     <div id="külső">
@@ -14,17 +14,17 @@
 
         <div id="középső">
             <div id="válaszok">
-                <div id="válasz1" class="kerdes">Válasz 1</div>
-                <div id="válasz2" class="kerdes">Válasz 2</div>
-                <div id="válasz3" class="kerdes">Válasz 3</div>
+                <div id="válasz1" class="kerdes kattinthato">Válasz 1</div>
+                <div id="válasz2" class="kerdes rossz">Válasz 2</div>
+                <div id="válasz3" class="kerdes jo">Válasz 3</div>
             </div>
             <div id="kép">
                 <img id="kép1" src="https://szoft1.comeback.hu/hajo/teszt-0050.jpg" />
             </div>
         </div>
         <div id="vezérlő">
-            <div class="gomb kattintható">Vissza</div>
-            <div class="gomb kattintható">Előre</div>
+            <div onclick="visszakattintás()" class="kattintható">Vissza</div>
+            <div onclick="előrekattintás()" class="kattintható">Előre</div>
         </div>
     </div>
 
