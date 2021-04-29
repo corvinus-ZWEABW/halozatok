@@ -12,16 +12,15 @@ namespace HajosTeszt.Controllers
     public class TesztController : ControllerBase
     {
         [HttpGet]
-        [Route("corvinus/szerverido")]
-        public IActionResult M1()
+        [HttpGet]
+        [Route("questions/count")]
+        public int M4() //Tetszőleges metódusnév
         {
-            string pontosIdő = DateTime.Now.ToShortTimeString();
+            HajostesztContext context = new HajostesztContext();
+            int kérdésekSzáma = context.Questions.Count();
 
-            return new ContentResult
-            {
-                ContentType = System.Net.Mime.MediaTypeNames.Text.Plain, //"text/plain"
-                Content = pontosIdő
-            };
+            return kérdésekSzáma;
         }
+    }
     }
 }
