@@ -5,44 +5,74 @@ var displayedQuestion;      //A hotList-bõl éppen ez a kérdés van kint
 var numberOfQuestions;      //Kérdések száma a teljes adatbázisban
 var nextQuestion = 1;
 
-window.onload = function letöltés() {
-    fetch('/questions.json')
-        .then(response => response.json())
-        .then(data => letöltésBefejezõdött(data));
+
+function init() {
+    for (let i = 0; i < questionsInHotList; i++) {
+        let q = {
+            question: {},
+            goodAnswers: 0
+        }
+        hotList[i] = q;
+    }
+    //kezdõ kérdéslista letöltése
+    for (let i = 0; i < questionsInHotList; i++) {
+        kérdésBetöltés(nextQuestion, i);
+        nextQuestion++;
+    }
+
+    //Kérdések száma
+    fetch("questions/count")
+        .then(result.text())
+        .then(n => { numberOfQuestions = parseInt(n) })
+
+    //Elõre-hátra gombok
+    document.getElementById("elõre_gomb").addEventListener("click", elõre);
+    ocument.getElementById("vissza_gomb").addEventListener("click", hátra);
+
 }
 
 function kérdésBetöltés(questionNumber, destination) {
     fetch(`/questions/${questionNumber}`)
         .then(
-            result => {
-                if (!result.ok) {
-                    console.error(`Hibás letöltés: ${response.status}`)
-                }
-                else {
-                    return result.json()
-                }
-            }
-        )
-        .then(
-            q => {
-                hotList[destination].question = q;
-                hotList[destination].goodAnswers = 0;
+                result => {
+                    if (!result.ok) {
+                        console.error(`Hibás letöltés: ${result.status}`);
+                        return null;
+                    }
+                    else {
+                        return result.json()
+                    }
+                })
+            .then(q => {
+                    hotList[destination].question = q;
+                    hotList[destination].goodAnswers = 0;
                 console.log(`A ${questionNumber}. kérdés letöltve a hot list ${destination}. helyére`)
-            }
-        );
-}
-
-function letöltésBefejezõdött(d) {
-    console.log("Sikeres letöltés")
-    console.log(d)
-    kérdések = d;
-}
+                if (displayedQuestion === undefined && destination === 0) {
+                    displayedQuestion = 0;
+                    kérdésMegjelenítés();
+                }
+                }
+            );
+    }
 
 function kérdésMegjelenítés(k) {
     let kérdés = hotList[displayedQuestion].question;
     console.log(kérdés);
-    document.getElementById("kérdés_szöveg").innerText = kérdés.questionText
-    document.getElementById("válasz1").innerText = kérdés.answer1
+    document.getElementById("kérdés_szöveg").innerText = kérdés.questionText;
+    document.getElementById("válasz1").innerText = kérdés.answer1;
+    document.getElementById("válasz2").innerText = kérdés.answer2;
+    document.getElementById("válasz3").innerText = kérdés.answer3;
+
+    if (kérdés.image) {
+        document.getElementById("kép").src = kérdés.image;
+        document.getElementById("kép").style.display = "block";
+    }
+    else {
+            document.getElementById("kép").style.display = "none";
+    }
+
+    window.onload = init();
+
         .then(
             q => {
                 hotList[destination].question = q;
@@ -56,41 +86,30 @@ function kérdésMegjelenítés(k) {
             }
 }
 
-
-function elõrekattintás() {
-    kérdéssorszám++;
-    if (kérdésszorszám == kérdések.lenght) {
-        kérdéssorszám = 0;
-    }
-    kérdésMegjelenítés(kérdésszorszám);
-}
-
-function visszakattintás() {
-    if (kérdéssorszám == 0) {
-        kérdésszorszám = kérdések.lenght - 1;
-    }
-    kérdésMegjelenítés(kérdéssorszám)
-}
-
-function init() {
-    for (var i = 0; i < questionsInHotList; i++) {
-        let q = {
-            question: {},
-            goodAnswers: 0
-        }
-        hotList[i] = q;
-    }
-
-    //Elsõ kérdések letöltése
-    for (var i = 0; i < questionsInHotList; i++) {
-        kérdésBetöltés(nextQuestion, i);
-        nextQuestion++;
-    }
-}
-
 function elõre() {
     displayedQuestion++;
     if (displayedQuestion == questionsInHotList) displayedQuestion = 0;
-    kérdésMegjelenítés()
+    kérdésMegjelenítés();
 }
+
+function hátra() {
+    displayedQuestion--;
+    if (displayedQuestion < 0) displayedQuestion = questionsInHotList - 1;
+    kérdésMegjelenítés();
+}
+
+function választás(n) {
+    let kérdés = hotList[displayedQuestion].question;
+    if (n === kérdés.correctAnswers) {
+        document.getElementById("válasz" + n).classList.add("jó")
+    }
+    else {
+        document.getElementById("válasz" + n).classList.add("rossz")
+        document.getElementById("válasz" + kérdés.correctAnswers).classList.add("jó")
+    }
+}
+
+
+
+
 

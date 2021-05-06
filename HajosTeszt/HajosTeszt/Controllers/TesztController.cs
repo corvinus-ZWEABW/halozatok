@@ -18,9 +18,22 @@ namespace HajosTeszt.Controllers
         {
             HajostesztContext context = new HajostesztContext();
             int kérdésekSzáma = context.Questions.Count();
-
             return kérdésekSzáma;
         }
+
+        [HttpGet]
+        [Route("questions/{sorszám}")]
+        public ActionResult M2(int sorszám)
+        {
+            HajosTesztContext context = new HajosTesztContext();
+            var kérdés = (from x in context.Questions
+                          where x.QuestionId == sorszám
+                          select x).FirstOrDefault();
+
+            if (kérdés == null) return BadRequest("Nincs ilyen kérdés");
+
+            return new JsonResult(kérdés);
+        }
     }
-    }
+    
 }
