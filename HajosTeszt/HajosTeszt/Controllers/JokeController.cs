@@ -43,5 +43,37 @@ namespace HajosTeszt.Controllers
         public void Delete(int id)
         {
         }
+
+        // GET api/jokes/5
+        [HttpGet("{id}")]
+        public Joke Get(int id)
+        {
+            FunnyDatabaseContext context = new FunnyDatabaseContext();
+            var keresettVicc = (from x in context.Jokes
+                                where x.JokeSk == id
+                                select x).FirstOrDefault();
+            return keresettVicc;
+        }
+
+        // POST api/jokes
+        [HttpPost]
+        public void Post([FromBody] Joke újVicc)
+        {
+            FunnyDatabaseContext context = new FunnyDatabaseContext();
+            context.Jokes.Add(újVicc);
+            context.SaveChanges();
+        }
+
+        // DELETE api/jokes/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            FunnyDatabaseContext context = new FunnyDatabaseContext();
+            var törlendőVicc = (from x in context.Jokes
+                                where x.JokeSk == id
+                                select x).FirstOrDefault();
+            context.Remove(törlendőVicc);
+        }
+
     }
 }
